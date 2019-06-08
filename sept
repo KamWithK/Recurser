@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Ensures consistent and formatted uniqueness in a simplistic human readable form
+
+# The following handles standard input and files
+if [ -e "$1" ]; then
+	Text=$(cat "$1")
+else
+	Text=$(cat -)
+fi
+
+Duplicates=$(echo -e "$Text" | sort | awk '{if (NF > 0) print $0}' | uniq -cd)
+NumberDuplicates=$(echo -e "$Duplicates" | grep "" -c)
+FormatedDuplicates=$(echo -e "$Text" | sort | awk '{if (NF > 0) print $0}' | uniq -d)
+
+for i in $(seq 1 $NumberDuplicates); do
+	Duplicate=$(echo -e "$FormatedDuplicates" | awk 'NR=='"$i"' { print $0 }')
+	NumberTimes=$(echo -e "$Duplicates" | awk 'NR=='"$i"' {print $1}')
+
+	for c in $(seq 1 $NumberTimes); do
+		Text=$(echo -e "$Text" | awk '{ if ($0~/^'"$Duplicate"'$/ && flag==0) {flag=1; $0=$0" #"'"$c"'} print $0 }')
+	done
+done
+
+echo "$Text"

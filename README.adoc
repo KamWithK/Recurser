@@ -1,0 +1,4 @@
+= Recurser
+
+A few small scripts designed to make life slightly easier when frequently browsing through directories, or managing other tasks. +
+They only depend on dmenu, find, awk, grep, sed, xclip, xdg-open/xdg-mime (can most likely be swapped out for another such utility with minor modifications) and the scripts here.

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+Path="$1"
+
+# enter each directory the user selects
+while [ -d "$Path" ]
+do
+	cd "$Path"
+	InDirectory="$(ls --group-directories-first -r)"
+	Path="$(echo -e $(echo -e "$InDirectory" | dmenu))"
+done
+
+# always return file path, even if it doesn't exist
+# return full path
+echo "$(pwd -P)"/"$Path"

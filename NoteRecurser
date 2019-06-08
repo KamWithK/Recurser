@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# run Recurser to browse the file system
+# any file selected that doesn't exists path will be outputted
+Path=$(Recurser $1)
+
+# tests whether the final path exists
+# if path doesn't exist, but file name specified, create file
+# file is then opened in NeoVim (because empty file, reader must here be specified)
+
+if [ -f "$Path" ]; then
+	# manual check for a terminal application, if so open in new terminal window
+	FileType=$(xdg-mime query filetype "$Path")
+	Application=$(xdg-mime query default "$FileType")
+
+	if [ "$Application" == "nvim.desktop" ]; then
+		st xdg-open "$Path"
+	else
+		xdg-open "$Path"
+	fi
+elif [ ! -d "$Path" ]; then
+	Choice=$(echo -e $(echo -e "Yes\nNo" | dmenu -i -p "Create New Note?"))
+	if [ "$Choice" == "Yes" ]; then
+		touch "$Path"'.adoc'
+		st nvim "$Path"'.adoc'
+	fi
+fi

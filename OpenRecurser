@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# run Recurser to browse the file system
+# only open existing files, re-output path otherwise
+Path=$(Recurser "$1")
+
+if [ -f "$Path" ]; then
+	xdg-open "$Path"
+elif [ ! -z "$Path" ]; then
+	echo "$Path"
+fi

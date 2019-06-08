@@ -1,0 +1,22 @@
+#!/bin/bash
+
+Columns=$(echo "" | dmenu -p "colums")
+Rows=$(echo "" | dmenu -p "rows")
+
+if [ -n  NumberColumns ] && [ -n NumberRows ]; then
+	output='|==='
+	
+	for row in $(seq 1 $Rows); do
+		output="$output\n"'| '
+
+		for column in $(seq 1 $Columns); do
+			output="$output"'___ | '
+	        done
+
+        done
+	
+	# Remove the extra ' | ' at the end of each line
+	# Then output the table to the clipboard
+	output=$(echo -e "$output" | sed 's/ | $//')"\n"'|==='
+	echo -e "$output" | xclip -selection clipboard
+fi

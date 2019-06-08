@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Takes an input file (by default runs the find command on theroot directory) and gets its content, before stripping it off any full stops coming before new lines
+# Output is piped into the clipboard where it can be used in a text processor with ease
+
+Input=$(find / -type f | dmenu -l 25 -p 'File To Reformat')
+cat "$Input" | sed ':a;N;$!ba;s/\.\n/. /g' | xclip -selection clipboard
